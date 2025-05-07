@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout, QFileDialog
 
 
 class MainWindow(QWidget):
@@ -6,15 +6,27 @@ class MainWindow(QWidget):
         super().__init__()
 
         self.setWindowTitle("GIS Scraper")
-        layout = QVBoxLayout()
-        button = QPushButton("בחר קובץ")
-        label = QLabel("")
+        self.layout = QVBoxLayout()
+        self.button = QPushButton("בחר קובץ")
+        self.label = QLabel("")
 
-        layout.addWidget(button)
-        layout.addWidget(label)
+        self.layout.addWidget(self.button)
+        self.layout.addWidget(self.label)
 
-        self.setLayout(layout)
+        self.setLayout(self.layout)
         self.show()
+
+        self.button.clicked.connect(self.open_file)
+
+    def open_file(self):
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "בחר קובץ",
+            "",
+            "ZIP Files (*.zip);;All Files (*)",  # סינון קבצים
+        )
+        if file_path:
+            self.label.setText(file_path)
 
 
 if __name__ == "__main__":
